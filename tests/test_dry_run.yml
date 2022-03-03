@@ -1,0 +1,124 @@
+- name: dry-run-vanilla
+  tags:
+    - dry-run
+  command: >
+    snakemake
+      --dryrun
+      --reason
+      --printshellcmds
+      --config pepfile=tests/pep/project_config.yaml
+      --snakefile Snakefile
+  exit_code: 0
+  stdout:
+    contains:
+      - echo "Hello world!" > outputfile.txt
+      - sample1.txt
+      - sample2.txt
+      - sample3.txt
+      - "echo mem ref.fa tests/data/sample1_R1.fastq.gz tests/data/sample1_R2.fastq.gz"
+      # Test if the default settings from common.smk are used when no other
+      # configuration options are specified
+      - echo common.smk common.smk common.smk
+    must_not_contain:
+      - rror
+  stderr:
+    must_not_contain:
+      - rror
+
+- name: dry-run-subsamples
+  tags:
+    - dry-run
+  command: >
+    snakemake
+      --dryrun
+      --reason
+      --printshellcmds
+      --config pepfile=tests/pep/project_subsamples.yaml
+      --snakefile Snakefile
+  exit_code: 0
+  stdout:
+    contains:
+      - echo "Hello world!" > outputfile.txt
+      - sample1.txt
+      - sample2.txt
+      - sample3.txt
+    contains_regex:
+      # Test if specifying multiple bam files using subsamples is handled
+      - 'echo mem .*sample1_R1.fastq.gz .*sample2_R1.fastq.gz .*sample1_R2.fastq.gz .*sample2_R2.fastq.gz'
+    must_not_contain:
+      - rror
+  stderr:
+    must_not_contain:
+      - rror
+
+- name: dry-run-settings-command-line
+  tags:
+    - dry-run
+  command: >
+    snakemake
+      --dryrun
+      --reason
+      --printshellcmds
+      --config
+      pepfile=tests/pep/project_config.yaml
+      setting1="command line"
+      --snakefile Snakefile
+  exit_code: 0
+  stdout:
+    contains:
+      # Test if setting1 has overwritten the default settings from common.smk
+      - echo command line common.smk common.smk
+    must_not_contain:
+      - rror
+  stderr:
+    must_not_contain:
+      - rror
+
+- name: dry-run-settings-configfile
+  tags:
+    - dry-run
+  command: >
+    snakemake
+      --dryrun
+      --reason
+      --printshellcmds
+      --config
+      pepfile=tests/pep/project_config.yaml
+      setting1="command line"
+      --configfile=tests/data/config.json
+      --snakefile Snakefile
+  exit_code: 0
+  stdout:
+    contains:
+      # Test if setting1 has overwritten the default settings from common.smk
+      - echo command line settingsfile common.smk
+    must_not_contain:
+      - rror
+  stderr:
+    must_not_contain:
+      - rror
+
+- name: dry-run-settings-pepfile
+  tags:
+    - dry-run
+  command: >
+    snakemake
+      --dryrun
+      --reason
+      --printshellcmds
+      --config
+      pepfile=tests/pep/project_config_settings.yaml
+      setting1="command line"
+      --configfile=tests/data/config.json
+      --snakefile Snakefile
+  exit_code: 0
+  stdout:
+    contains:
+      # Test if setting1 has overwritten the default settings from common.smk
+      - echo command line settingsfile pepfile
+    must_not_contain:
+      - rror
+  stderr:
+    must_not_contain:
+      - rror
+

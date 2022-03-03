@@ -1,0 +1,84 @@
+name: Continuous Integration
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 4 * * 1'
+
+defaults:
+  run:
+    # This is needed for miniconda, see:
+    # https://github.com/marketplace/actions/setup-miniconda#important.
+    shell: bash -l {0}
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        test:
+          - sanity-snakemake
+          - sanity-snakemake-lint
+          - sanity-singularity
+          - sanity-snakefmt
+          - dry-run-vanilla
+          - dry-run-subsamples
+          - dry-run-settings-command-line
+          - dry-run-settings-configfile
+          - dry-run-settings-pepfile
+          - integration-vanilla
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: eWaterCycle/setup-singularity@v6
+      with:
+        singularity-version: 3.6.4
+
+    - name: Cache conda packages
+      uses: actions/cache@v2
+      env:
+        # Increase this value to manually invalidate the cache
+        CACHE_NUMBER: 0
+      with:
+        path: ~/conda_pkgs_dir
+        key:
+          ${{ runner.os}}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
+
+    - name: Cache conda environment
+      uses: actions/cache@v2
+      env:
+        # Increase this value to manually invalidate the cache
+        CACHE_NUMBER: 0
+      with:
+        path: /usr/share/miniconda/envs/snakemake-project
+        key:
+          ${{ runner.os}}-snakemake-project-${{ env.CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
+
+    - uses: conda-incubator/setup-miniconda@v2.0.1
+      # https://github.com/conda-incubator/setup-miniconda.
+      with:
+        activate-environment: snakemake-project
+        environment-file: environment.yml
+        auto-activate-base: false
+
+    - name: Run test in conda evironment
+      run: >-
+        pytest --keep-workflow-wd-on-fail --tag ${{ matrix.test }}
+
+    - name: Check job stderr messages in case of failure
+      if: ${{ failure() }}
+      run: >-
+        bash -c '
+        for file in $(find /tmp/pytest_workflow_* -name log.err); do
+          echo $file; cat $file
+        done
+        '
+    - name: Check job stdout messages in case of failure
+      if: ${{ failure() }}
+      run: >-
+        bash -c '
+        for file in $(find /tmp/pytest_workflow_* -name log.out); do
+          echo $file; cat $file
+        done
+        '

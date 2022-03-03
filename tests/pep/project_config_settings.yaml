@@ -1,0 +1,5 @@
+pep_version: 2.0.0
+sample_table: "samples.csv"
+snakemake-pipeline:
+  setting1: pepfile
+  setting3: pepfile
