@@ -1,0 +1,25 @@
+include: "common.smk"
+
+
+rule all:
+    input:
+        f="trimmed_R1.fastq.gz",
+        r="trimmed_R2.fastq.gz",
+
+
+rule cutadapt:
+    input:
+        f=config["forward"],
+        r=config["reverse"],
+    output:
+        f="trimmed_R1.fastq.gz",
+        r="trimmed_R2.fastq.gz",
+    log:
+        "log/cutadapt.txt",
+    container:
+        containers["cutadapt"]
+    shell:
+        """
+        cutadapt -o {output.f} -p {output.r} \
+            {input.f} {input.r} 2> {log}
+        """

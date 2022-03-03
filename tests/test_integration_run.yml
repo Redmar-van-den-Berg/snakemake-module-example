@@ -17,7 +17,3 @@
     - path: outputfile.txt
       contains:
         - Hello world!
-    - path: sample1.txt
-    - path: sample2.txt
-    - path: sample3.txt
-    - path: sample1.bam
