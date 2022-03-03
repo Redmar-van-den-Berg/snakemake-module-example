@@ -51,14 +51,14 @@ jobs:
         # Increase this value to manually invalidate the cache
         CACHE_NUMBER: 0
       with:
-        path: /usr/share/miniconda/envs/snakemake-project
+        path: /usr/share/miniconda/envs/snakemake-module-example
         key:
-          ${{ runner.os}}-snakemake-project-${{ env.CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
+          ${{ runner.os}}-snakemake-module-example-${{ env.CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
 
     - uses: conda-incubator/setup-miniconda@v2.0.1
       # https://github.com/conda-incubator/setup-miniconda.
       with:
-        activate-environment: snakemake-project
+        activate-environment: snakemake-module-example
         environment-file: environment.yml
         auto-activate-base: false
 

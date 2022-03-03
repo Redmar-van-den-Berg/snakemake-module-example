@@ -5,7 +5,7 @@ pepfile: config["pepfile"]
 
 
 # Apply the settings from the pepfile, overwriting the default ones
-default.update(pep.config.get("snakemake-pipeline", dict()))
+default.update(pep.config.get("snakemake-module-example", dict()))
 
 # Apply the options specified to snakemake, overwriting the default settings
 # and the settings from the PEP file
