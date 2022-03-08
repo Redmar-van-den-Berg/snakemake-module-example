@@ -5,7 +5,7 @@
 
 # snakemake-module-example
 Example of a snakemake project using [snakemake
-modules](https://snakemake.readthedocs.io/en/v6.14.0/snakefiles/modularization.html).
+modules](https://snakemake.readthedocs.io/en/v6.14.0/snakefiles/modularization.html#modules).
 
 
 ## Explanation
