@@ -4,7 +4,41 @@
 ![Commits since latest release](https://img.shields.io/github/commits-since/redmar-van-den-berg/snakemake-module-example/latest)
 
 # snakemake-module-example
-Example of a snakemake project
+Example of a snakemake project using modules
+
+
+## Explanation
+This project consists of three different Snakefiles, two of which are used as
+modules by the third.
+
+### qc-seq
+Firstly, there is the qc-seq Snakefile, which runs cutadapt on two input fastq
+files. You can run this Snakemake pipeline directly with
+```bash
+snakemake  -j1 --use-singularity --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz -s modules/qc-seq/Snakefile
+```
+This will produce two trimmed fastq files in your working directory,
+`trimmed_R1.fastq.gz` and `trimmed_R2.fastq.gz`.
+
+### alignment
+The second Snakefile has a workflow to map reads to the reference, producing a
+bam file. This pipeline can be run directly with
+```bash
+snakemake -j1 --use-singularity --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz reference=tests/data/reference/ref.fa -s modules/align/Snakefile
+```
+This produces the file `alignment.sorted.bam` in the current working directory.
+
+### The main pipeline
+The main pipeline does not have any rules of it's own, but combines the rules
+from the qc-seq and alignment modules together to produce its output files. You
+can run the main pipeline with
+```bash
+snakemake -j1 --use-singularity --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz reference=tests/data/reference/ref.fa -s Snakefile
+```
+This will produce the file `from-main.bam` in the current working directory.
+Please see the `Snakefile` in the top level folder to see how the two modules
+are connected together.
+
 
 ## Installation
 Download the repository from github
