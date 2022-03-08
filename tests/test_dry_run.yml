@@ -6,32 +6,8 @@
       --dryrun
       --reason
       --printshellcmds
-      --config pepfile=tests/pep/project_config.yaml
+      --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz
       --snakefile Snakefile
-  exit_code: 0
   stdout:
     contains:
-      - echo "Hello world!" > outputfile.txt
-      # Test if the default settings from common.smk are used when no other
-      # configuration options are specified
-      - echo common.smk common.smk common.smk
-    must_not_contain:
-      - rror
-  stderr:
-    must_not_contain:
-      - rror
-
-- name: dry-run-subsamples
-  tags:
-    - dry-run
-  command: >
-    snakemake
-      --dryrun
-      --reason
-      --printshellcmds
-      --config pepfile=tests/pep/project_subsamples.yaml
-      --snakefile Snakefile
-  exit_code: 0
-  stdout:
-    contains:
-      - echo "Hello world!" > outputfile.txt
+      - "tests/data/micro_rg1_R1.fq.gz tests/data/micro_rg1_R1.fq.gz 2> log/cutadapt.txt"

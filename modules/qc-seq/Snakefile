@@ -5,6 +5,8 @@ rule all:
     input:
         f="trimmed_R1.fastq.gz",
         r="trimmed_R2.fastq.gz",
+    log:
+        "log/qc-seq-all.txt",
 
 
 rule cutadapt:

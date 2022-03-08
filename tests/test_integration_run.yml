@@ -8,12 +8,8 @@
       --jobs 1
       --latency-wait 120
       --use-singularity --singularity-args ' --cleanenv --bind /tmp'
-      --config pepfile=tests/pep/project_config.yaml
+      --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz
       --snakefile Snakefile
-  stderr:
-    must_not_contain:
-      - rror
   files:
-    - path: outputfile.txt
-      contains:
-        - Hello world!
+    - path: trimmed_R1.fastq.gz
+    - path: trimmed_R2.fastq.gz

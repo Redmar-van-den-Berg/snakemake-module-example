@@ -19,7 +19,7 @@
   command: >
     snakemake
       --lint
-      --config pepfile=tests/pep/project_config.yaml
+      --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz
 
 - name: sanity-snakefmt
   tags:
