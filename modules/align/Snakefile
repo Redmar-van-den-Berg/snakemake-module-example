@@ -4,9 +4,11 @@ include: "common.smk"
 rule all:
     input:
         align="alignment.sorted.bam",
+    log:
+        "log/align-module.txt",
 
 
-rule align:
+rule bwa_mem2:
     input:
         f=config["forward"],
         r=config["reverse"],

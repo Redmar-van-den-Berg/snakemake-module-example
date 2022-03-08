@@ -8,8 +8,9 @@
       --jobs 1
       --latency-wait 120
       --use-singularity --singularity-args ' --cleanenv --bind /tmp'
-      --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz
+      --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz reference=tests/data/reference/ref.fa
       --snakefile Snakefile
   files:
     - path: trimmed_R1.fastq.gz
     - path: trimmed_R2.fastq.gz
+    - path: from-main.bam

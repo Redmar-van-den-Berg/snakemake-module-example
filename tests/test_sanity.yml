@@ -19,7 +19,7 @@
   command: >
     snakemake
       --lint
-      --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz
+      --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz reference=tests/data/reference/ref.fa
 
 - name: sanity-snakefmt
   tags:

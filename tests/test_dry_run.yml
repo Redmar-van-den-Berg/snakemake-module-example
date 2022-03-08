@@ -6,8 +6,11 @@
       --dryrun
       --reason
       --printshellcmds
-      --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz
+      --config forward=tests/data/micro_rg1_R1.fq.gz reverse=tests/data/micro_rg1_R1.fq.gz reference=tests/data/reference/ref.fa
       --snakefile Snakefile
   stdout:
     contains:
       - "tests/data/micro_rg1_R1.fq.gz tests/data/micro_rg1_R1.fq.gz 2> log/cutadapt.txt"
+    contains_regex:
+      # Test that bwa-mem2 is run on trimmed output of the qc_seq module
+      - "bwa-mem2 .* trimmed_R1.fastq.gz trimmed_R2.fastq.gz"
