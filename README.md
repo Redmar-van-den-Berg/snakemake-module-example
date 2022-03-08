@@ -28,3 +28,17 @@ of priority.
 2. Setting specified in the PEP project configuration, under the key
    `snakemake-module-example`
 3. The default settings for the pipeline, as specified in the `common.smk` file
+
+## Tests
+You can run the tests that accompany this pipeline with the following commands
+
+```bash
+# Check if requirements are installed, and run linting on the Snakefile
+pytest --kwd --tag sanity
+
+# Test the pipeline settings in dry-run mode
+pytest --kwd --tag dry-run
+
+# Test the performance of the pipeline by running on the test data
+pytest --kwd --tag integration
+```
