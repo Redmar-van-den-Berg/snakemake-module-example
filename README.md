@@ -4,12 +4,14 @@
 ![Commits since latest release](https://img.shields.io/github/commits-since/redmar-van-den-berg/snakemake-module-example/latest)
 
 # snakemake-module-example
-Example of a snakemake project using modules
+Example of a snakemake project using [snakemake
+modules](https://snakemake.readthedocs.io/en/v6.14.0/snakefiles/modularization.html).
 
 
 ## Explanation
 This project consists of three different Snakefiles, two of which are used as
-modules by the third.
+modules by the third. Each of the Snakefiles are fully fledged pipelines, that
+can be executed independenly as well as be used as modules.
 
 ### qc-seq
 Firstly, there is the qc-seq Snakefile, which runs cutadapt on two input fastq
