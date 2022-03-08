@@ -1,0 +1,30 @@
+include: "common.smk"
+
+
+rule all:
+    input:
+        align="alignment.sorted.bam",
+
+
+rule align:
+    input:
+        f=config["forward"],
+        r=config["reverse"],
+        ref=config["reference"],
+    output:
+        bam="alignment.sorted.bam",
+    log:
+        bwa="log/align.bwa.txt",
+        sam="log/align.sam.txt",
+    container:
+        containers["bwa-mem2"]
+    shell:
+        """
+        bwa-mem2 mem \
+            {input.ref} \
+            {input.f} {input.r} 2> {log.bwa} |
+            samtools sort \
+                -l 1 \
+            - -o {output.bam} 2> {log.sam};
+            samtools index {output.bam}
+        """
